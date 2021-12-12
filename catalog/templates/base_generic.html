@@ -53,7 +53,7 @@
                     <ul class="navbar-nav ms-auto mb-3 mb-lg-0">
                         {% if user.is_authenticated %}
                             <li class="nav-item">
-                                <a href="{% url 'my-page' %}" class="nav-link"><i>{{user.username}}</i></a> 
+                                <a href="{% url 'my-voted' %}" class="nav-link"><i>{{user.username}}</i></a> 
                             </li>
                             {% if perms.catalog.can_see_all %}
                                 <li class="nav-item">
