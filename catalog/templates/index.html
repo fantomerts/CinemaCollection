@@ -1,0 +1,20 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div id="main-info">
+    <div id="title">Cinema Collection</div>
+    <!--<li><strong>Фильмы:</strong> {{ movies_count }}</li>
+    <li><strong>Режиссеры:</strong> {{ directors_count }}</li>
+    <li><strong>Актеры:</strong> {{ actors_count }}</li>-->
+    <div id="contacts-div">
+        <div id="movies">
+            <a href="{% url 'movies' %}">
+                <i class="fa fa-film" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div id="actors"><a href="{% url 'actors' %}" id="project-link"><i class="fa fa-users" aria-hidden="true"></i></a></div>
+        <div id="directors"><a href="{% url 'directors' %}"><i class="fa fa-video-camera" aria-hidden="true"></i></a></div>
+        <div id="profile"><a href="{% url 'my-voted' %}"><i class="fa fa-star" aria-hidden="true"></i></a></div>
+    </div>
+</div>
+{% endblock %}

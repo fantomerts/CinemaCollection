@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block title %}<title>Cinema Collection</title>{% endblock %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
+    <!-- Добавление дополнительного статического CSS файла -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/list_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/details-style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/auth-style.css' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <header id="header" class="fixed-top">
+        {% block navbar %}
+        <navbar class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a href="{% url 'index' %}" class="navbar-brand">
+                    {% load static %}
+                    <img src="{% static 'img/logo.png' %}" alt="" id="logo" width="30" height="30" class="d-inline-block align-top" alt="">
+                    Cinema Collection
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent" area-controls="navContent" aria-expanded="true" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navContent">
+                    <ul class="navbar-nav me-auto mb-3 mb-lg-0">
+                        <li class="nav-item">
+                            <a href="{% url 'movies' %}" class="nav-link {% block nav_movies%}{% endblock %}">Фильмы</a> 
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'actors' %}" class="nav-link {% block nav_actors%}{% endblock %}">Актеры</a> 
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'directors' %}" class="nav-link {% block nav_directors%}{% endblock %}">Режиссеры</a> 
+                        </li>
+                    </ul>
+                </div>
+                <div class="collapse navbar-collapse" id="navContent">
+                    <ul class="navbar-nav ms-auto mb-3 mb-lg-0">
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a href="{% url 'my-page' %}" class="nav-link"><i>{{user.username}}</i></a> 
+                            </li>
+                            {% if perms.catalog.can_see_all %}
+                                <li class="nav-item">
+                                    <a href="{% url 'my-voted' %}" class="nav-link {% block my_voted1%}{% endblock %}">Все оценки</a> 
+                                </li>
+                            {% else %}
+                                <li class="nav-item">
+                                    <a href="{% url 'my-voted' %}" class="nav-link {% block my_voted2%}{% endblock %}">Мои фильмы</a> 
+                                </li>
+                            {% endif %}
+                            <li class="nav-item">
+                                <a href="{% url 'logout'%}?next={{request.path}}" class="nav-link">Выйти</a> 
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a href="{% url 'login'%}?next={{request.path}}" class="nav-link {% block login%}{% endblock %}">Войти</a> 
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'signup'%}" class="nav-link {% block signup%}{% endblock %}">Зарегистрироваться</a> 
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </navbar>
+        {% endblock %}
+    </header>
+    <!--<main id="main">-->
+        {% block content %}{% endblock %}
+                {% block pagination %}
+                    {% if is_paginated %}
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" style="background-color: black;">Предыдущая</a>
+                              </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true" style="background-color: black;">Предыдущая</a>
+                              </li>
+                            {% endif %}
+                    
+                            {% if page_obj.number|add:'-4' > 1 %}
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.number|add:'-5' }}" style="background-color: black;">&hellip;</a></li>
+                            {% endif %}
+                    
+                            {% for i in page_obj.paginator.page_range %}
+                                {% if page_obj.number == i %}
+                                    <li class="page-item active" aria-current="page">
+                                  <span class="page-link" style="background-color: rgb(167, 167, 216); border-color: rgb(167, 167, 216);">
+                                    {{ i }}
+                                    <span class="sr-only">(current)</span>
+                                  </span>
+                                </li>
+                                {% elif i > page_obj.number|add:'-5' and i < page_obj.number|add:'5' %}
+                                     <li class="page-item"><a class="page-link" href="?page={{ i }}" style="background-color: black;">{{ i }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                    
+                            {% if page_obj.paginator.num_pages > page_obj.number|add:'4' %}
+                               <li class="page-item"><a class="page-link" href="?page={{ page_obj.number|add:'5' }}" style="background-color: black;">&hellip;</a></li>
+                            {% endif %}
+                    
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" style="background-color: black;">Следующая</a>
+                              </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true" style="background-color: black;">Следующая</a>
+                              </li>
+                            {% endif %}
+                          </ul>
+                        </nav>
+                    {% endif %}
+                {% endblock %}
+    <!--</main>-->
+</body>
+</html>

@@ -1,0 +1,40 @@
+{% extends "base_generic.html" %}
+{% block nav_movies%}
+    active
+{% endblock %}
+{% block content %}
+    <div id="help-bar">
+      <div class="d1">
+          <form method="GET">
+              <input type="text" placeholder="Название фильма" name="q" value="{{ request.GET.q }}">
+          </form>
+      </div>
+    </div>
+
+    {% if movie_list %}
+    <main id="main-list">
+    {% for movie in movie_list %}
+    {% load poll_extras %}
+      <div class="poster">
+        <img src="{{ movie.poster }}">
+        <a href="{{ movie.get_absolute_url }}">
+            <div class="bg">
+                <div class="title"><h4>{{ movie.title }}</h4></div>
+                <div class="score"><div class="score-circle" style="background: {{movie.get_vote_color}};">{{movie.get_middle_vote}}</div></div>
+                <div class="description">
+                    {% for user_vote in movie.votedmovie_set.all|on_user:user.id %}
+                      <div class="my-score">Моя оценка: <span>{{user_vote}}</span></div>
+                    {% endfor %}
+                    <div class="release-year">Год выхода: {{movie.release.year}}</div>
+                    <div class="timing">Хронометраж: {{movie.timing}} мин</div>
+                    <div class="director">Реж.: {% for director in movie.director.all %}{{ director }}{% if not forloop.last %}, {% endif %}{% endfor %}</div>
+                </div>
+            </div>
+        </a>
+      </div>
+    {% endfor %}
+    </main>
+    {% else %}
+      <!--<p>В коллекции нет фильмов.</p>-->
+    {% endif %} 
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base_generic.html" %}
+{% block nav_directors%}
+    active
+{% endblock %}
+{% block content %}
+    <div id="help-bar">
+      <div class="d1">
+          <form method="GET">
+              <input type="text" placeholder="Имя режиссера" name="q" value="{{ request.GET.q }}">
+          </form>
+      </div>
+    </div>
+
+    {% if director_list %}
+    <main id="main-list">
+      {% for director in director_list %}
+        <div class="poster">
+          <img src="{{ director.photo }}">
+          <a href="{{ director.get_absolute_url }}">
+              <div class="bg">
+                  <div class="title"><h4>{{ director.name }}</h4></div>
+                  <div class="description">
+                      <div class="score">{{director.get_birth_date}}</div>
+                      {% if director.date_of_death != None %}
+                      <div class="score">- {{director.get_death_date}}</div>
+                      {% endif %}
+                  </div>
+              </div>
+          </a>
+        </div>
+      {% endfor %}
+    </main>
+    {% else %}
+      <!--<p>В базе нет режиссеров.</p>-->
+    {% endif %} 
+{% endblock %}

@@ -1,0 +1,54 @@
+.sidebar-nav {
+    margin-top: 20px;
+    padding: 0;
+    list-style: none;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background: rgb(28,33,39);
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    
+    margin: 0;
+}
+
+navbar {
+    background-color: black;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.navbar-brand {
+    font-family: 'Rajdhani', sans-serif;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgb(238, 238, 238);
+}
+
+.pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.pagination div {
+    margin: 0 20px;
+}
+
+.page-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.page-link:hover {
+    color: rgb(167, 167, 216);
+}

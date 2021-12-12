@@ -1,0 +1,62 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <main id="main">
+        <div id="bottom">
+            <div id="left">
+                <img src="{{director.photo}}">
+                <!--<style>
+                    .score {
+                        height: auto;
+                        margin-top: 20px;
+                        margin-bottom: 5px;
+                    }
+                </style>
+                <div class="score"><div class="score-circle" style="background: {{movie.get_vote_color}};">{{movie.get_middle_vote}}</div></div>
+                <p id="votes-count">(оценок: {{movie.get_count_votes}})</p>-->
+            </div>
+            <div id="right">
+                <h1><strong id="movie-title">{{ director.name }}</strong></h1>
+                <div class="parameter">
+                    <div class="parameter-title" id="born-dead"><strong>Дата рождения</strong></div>
+                    <div class="parameter-value">{{ director.get_birth_date }}</div>
+                </div>
+                {% if director.date_of_death != None %}
+                <div class="parameter">
+                    <div class="parameter-title" id="born-dead"><strong>Дата смерти</strong></div>
+                    <div class="parameter-value">{{ director.get_death_date }}</div>
+                </div>
+                {% endif %}
+                <ul id="facts">
+                    {% for fact in director.fact.all %}
+                        <li class="fact">{{ fact }}</li>
+                    {% if not forloop.last %}
+                    {% endif %}
+                    {% endfor %}
+                </ul>  
+                <main id="main-list">
+                    {% for movie in director.movie_set.all %}
+                    {% load poll_extras %}
+                    <div class="poster">
+                        <img src="{{ movie.poster }}">
+                        <a href="{{ movie.get_absolute_url }}">
+                            <div class="bg">
+                                <div class="title"><h4>{{ movie.title }}</h4></div>
+                                <div class="score"><div class="score-circle" style="background: {{movie.get_vote_color}};">{{movie.get_middle_vote}}</div></div>
+                                <div class="description">
+                                    {% for user_vote in movie.votedmovie_set.all|on_user:user.id %}
+                                    <div class="my-score">Моя оценка: <span>{{user_vote}}</span></div>
+                                    {% endfor %}
+                                    <div class="release-year">Год выхода: {{movie.release.year}}</div>
+                                    <div class="timing">Хронометраж: {{movie.timing}} мин</div>
+                                    <div class="director">Реж.: {% for director in movie.director.all %}{{ director }}{% if not forloop.last %}, {% endif %}{% endfor %}</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </main>
+            </div>
+        </div>
+    </main>
+{% endblock %}

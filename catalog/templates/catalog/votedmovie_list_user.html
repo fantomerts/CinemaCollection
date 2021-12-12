@@ -1,0 +1,71 @@
+{% extends "base_generic.html" %}
+{% block my_voted1%}
+    active
+{% endblock %}
+{% block my_voted2%}
+    active
+{% endblock %}
+{% block content %}
+    <!-- <div id="help-bar">
+      <div class="d1">
+          <form method="GET">
+              <input type="text" placeholder="Название фильма" name="q" value="{{ request.GET.q }}">
+          </form>
+      </div>
+    </div> -->  
+    {% if votedmovie_list %}
+    <main id="table-list">
+      {% if perms.catalog.can_see_all %}
+            <table class="table table-dark table-hover">
+              <thead>
+                <tr>
+                  <th>№</th>
+                  <th>Пользователь</th>
+                  <th>Фильм</th>
+                  <th>Оценка</th>
+                  <th><span>Дата и время</span></th>
+                  <th class="table-poster">Постер</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for moviescore in votedmovie_list.0.get_all %}
+                <tr onclick="window.location.href='{% url 'movie-detail' moviescore.movie.pk %}'; return false">
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td>{{ moviescore.user }}</td>
+                  <td>{{ moviescore.movie }}</td>
+                  <td><div class="score"><div class="score-circle" style="background: {{moviescore.get_vote_color}};">{{moviescore.score}}</div></div></td>
+                  <td>{{moviescore.get_score_date}}</td>
+                  <td class="table-poster"><img src="{{ moviescore.movie.poster }}" width="100"></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+      {% else %}
+          <table class="table table-dark table-hover">
+            <thead>
+              <tr>
+                <th>№</th>
+                <th>Фильм</th>
+                <th>Оценка</th>
+                <th>Дата и время</th>
+                <th>Постер</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for moviescore in votedmovie_list %}
+              <tr onclick="window.location.href='{% url 'movie-detail' moviescore.movie.pk %}'; return false">
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ moviescore.movie }}</td>
+                <td><div class="score"><div class="score-circle" style="background: {{moviescore.get_vote_color}};">{{moviescore.score}}</div></div></td>
+                <td>{{moviescore.get_score_date}}</td>
+                <td><img src="{{ moviescore.movie.poster }}" width="100"></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+      {% endif %}
+    </main>
+    {% else %}
+      <!--<p>В базе нет оценок.</p>-->
+    {% endif %} 
+{% endblock %}

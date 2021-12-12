@@ -1,0 +1,11 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<main id="main-auth">
+    <div id="auth-form">
+    <p>Вы вышли!</p>
+
+    <a href="{% url 'login'%}">Нажмите, чтобы войти снова</a>
+    </div>
+</main>
+{% endblock %}

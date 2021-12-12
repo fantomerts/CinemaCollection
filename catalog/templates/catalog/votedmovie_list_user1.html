@@ -1,0 +1,50 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <div id="help-bar">
+      <div class="d1">
+          <form method="GET">
+              <input type="text" placeholder="Название фильма" name="q" value="{{ request.GET.q }}">
+          </form>
+      </div>
+    </div>
+
+    {% if votedmovie_list %}
+    <main id="main-list">
+      {% if perms.catalog.can_see_all %}
+          {% for moviescore in votedmovie_list.0.get_all %}
+            <div class="poster">
+              <img src="{{ moviescore.movie.poster }}">
+              <a href="{% url 'movie-detail' moviescore.movie.pk %}">
+                <div class="bg">
+                  <div class="title"><h4>{{ moviescore.movie.title }}</h4></div>
+                  <div class="score"><div class="score-circle" style="background: {{moviescore.get_vote_color}};">{{moviescore.score}}</div></div>
+                  <div class="description">
+                      <div class="score-user"><i>{{moviescore.user}}</i></div>
+                      <div class="score-date">{{moviescore.get_score_date}}</div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+      {% else %}
+        {% for moviescore in votedmovie_list %}
+          <div class="poster">
+            <img src="{{ moviescore.movie.poster }}">
+            <a href="{% url 'movie-detail' moviescore.movie.pk %}">
+              <div class="bg">
+                <div class="title"><h4>{{ moviescore.movie.title }}</h4></div>
+                <div class="score"><div class="score-circle" style="background: {{moviescore.get_vote_color}};">{{moviescore.score}}</div></div>
+                <div class="description">
+                    <div class="score-date">{{moviescore.get_score_date}}</div>
+                </div>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </main>
+    {% else %}
+      <!--<p>В базе нет оценок.</p>-->
+    {% endif %} 
+{% endblock %}

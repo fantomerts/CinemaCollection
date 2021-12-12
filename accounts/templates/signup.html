@@ -1,0 +1,36 @@
+{% extends 'base_generic.html' %}
+{% block signup %}
+active
+{% endblock %}
+{% block content %}
+<main id="main-auth">
+<div id="auth-form">
+    {% if form.errors %}
+        {{form.errors}}
+    {% endif %}
+    <!-- Надо исправить -->
+    <p id="acc-already">Если у вас уже есть аккаунт, то просто <a href="{% url 'login'%}">войдите</a> в него</p>
+    <form method="post">
+    {% csrf_token %}
+    <div class="input-div">
+        <div><strong>Логин</strong></div>
+        <div class="user-input">{{ form.username }}</div>
+    </div>
+    <div class="input-div">
+        <div><strong>Email</strong></div>
+        <div class="user-input">{{ form.email }}</div>
+    </div>
+    <div class="input-div">
+      <div><strong>Пароль</strong></div>
+      <div class="user-input">{{ form.password1 }}</div>
+    </div>
+    <div class="input-div">
+      <div><strong>Подтверждение пароля</strong></div>
+      <div class="user-input">{{ form.password2 }}</div>
+    </div>
+    
+    <div class="button-div"><input type="submit" id="auth-button" class="btn btn-success" value="Зарегистрироваться" /></div>
+    </form>
+</div>
+</main>
+{% endblock content %}

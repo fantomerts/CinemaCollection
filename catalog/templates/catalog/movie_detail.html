@@ -1,0 +1,234 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load poll_extras %}
+    <script type="text/javascript">
+        window.addEventListener('load', function () {
+            {% for user_vote in movie.votedmovie_set.all|on_user:user.id %}
+                document.getElementById('star{{user_vote}}').click();
+            {% endfor %}
+
+            var title;
+            var rating;
+            var count;
+            $.get("https://www.omdbapi.com/?i=tt{{movie.imdb}}&apikey=ba1f4581").then(function(rawdata){
+                var rawstring =JSON.stringify(rawdata);
+                var data =JSON.parse(rawstring);
+                title = data.Title;
+                rating = data.imdbRating;
+                count = data.imdbVotes;
+                var posterurl =data.Poster;
+                document.getElementById('imdb-score').innerHTML='<strong>'+ rating + '</strong> (' + count + ')';
+            })
+        })
+    </script>
+    <main id="main">
+        {% if movie.video != None %}
+        <div id="up">
+            <div>
+                <video autoplay muted loop>
+                    <source src="{{movie.video}}" type="video/mp4" />
+                </video>
+                <div id="shadow"></div>
+            </div>
+        </div>
+        {% endif %}
+        <div id="bottom">
+            <div id="left">
+                <img src="{{movie.poster}}">
+                <div id="import-votes">
+                    {% if movie.kp != None %}
+                        <a href='https://www.kinopoisk.ru/film/{{movie.kp}}/' target="_blank"><div style="background: url('https://rating.kinopoisk.ru/{{movie.kp}}.gif');" class="import-vote"></div></a>
+                    {% endif %}
+                    {% if movie.imdb != None %}
+                        <a href='https://www.imdb.com/title/tt{{movie.imdb}}/' target="_blank">
+                            <div class="import-vote" id="imdb-vote">
+                                <p id="imdb-title"><strong>IMDb</strong></p>
+                                <p id="imdb-score"></p>
+                            </div>
+                        </a>
+                    {% endif %}
+                </div>
+                <style>
+                    .score {
+                        height: auto;
+                        margin-top: 20px;
+                        margin-bottom: 5px;
+                    }
+                </style>
+                <div class="score"><div class="score-circle" style="background: {{movie.get_vote_color}};">{{movie.get_middle_vote}}</div></div>
+                <p id="votes-count">(оценок: {{movie.get_count_votes}})</p>
+                {% if user.is_authenticated %}
+                    <form action="#" method="get" class="rate">
+                        <input type="radio" id="star10" name="rate10" value="10"/>
+                        <label for="star10" title="10" id="rate10">10 stars</label>
+                        <input type="radio" id="star9" name="rate9" value="9" />
+                        <label for="star9" title="9" id="rate9">9 stars</label>
+                        <input type="radio" id="star8" name="rate8" value="8" />
+                        <label for="star8" title="8" id="rate8">8 stars</label>
+                        <input type="radio" id="star7" name="rate7" value="7" />
+                        <label for="star7" title="7" id="rate7">7 stars</label>
+                        <input type="radio" id="star6" name="rate6" value="6" />
+                        <label for="star6" title="6" id="rate6">6 stars</label>
+                        <input type="radio" id="star5" name="rate5" value="5" />
+                        <label for="star5" title="5"  id="rate5"><a>5 stars</a></label>
+                        <input type="radio" id="star4" name="rate4" value="4" />
+                        <label for="star4" title="4" id="rate4">4 stars</label>
+                        <input type="radio" id="star3" name="rate3" value="3" />
+                        <label for="star3" title="3" id="rate3">3 stars</label>
+                        <input type="radio" id="star2" name="rate2" value="2" />
+                        <label for="star2" title="2" id="rate2">2 stars</label>
+                        <input type="radio" id="star1" name="rate1" value="1" />
+                        <label for="star1" title="1" id="rate1">1 star</label>
+                    </form>
+                    <script type="text/javascript">
+                        $(function(){
+                          $("#rate10").click(function(){
+                            $.ajax({
+                                type: "GET",
+                                url: '{{movie.id}}?vote={{movie.id}}vote{{user.id}}vote' + $("#star10").val(),
+                                });
+                                window.location.reload();
+                                return false; //<---- move it here
+                          });
+                       });
+                       $(function(){
+                          $("#rate9").click(function(){
+                            $.ajax({
+                                type: "GET",
+                                url: '{{movie.id}}?vote={{movie.id}}vote{{user.id}}vote' + $("#star9").val(),
+                                });
+                                window.location.reload();
+                                return false; //<---- move it here
+                          });
+                       });
+                       $(function(){
+                          $("#rate8").click(function(){
+                            $.ajax({
+                                type: "GET",
+                                url: '{{movie.id}}?vote={{movie.id}}vote{{user.id}}vote' + $("#star8").val(),
+                                });
+                                window.location.reload();
+                                return false; //<---- move it here
+                          });
+                       });
+                       $(function(){
+                          $("#rate7").click(function(){
+                            $.ajax({
+                                type: "GET",
+                                url: '{{movie.id}}?vote={{movie.id}}vote{{user.id}}vote' + $("#star7").val(),
+                                });
+                                window.location.reload();
+                                return false; //<---- move it here
+                          });
+                       });
+                       $(function(){
+                          $("#rate6").click(function(){
+                            $.ajax({
+                                type: "GET",
+                                url: '{{movie.id}}?vote={{movie.id}}vote{{user.id}}vote' + $("#star6").val(),
+                                });
+                                window.location.reload();
+                                return false; //<---- move it here
+                          });
+                       });
+                       $(function(){
+                          $("#rate5").click(function(){
+                            $.ajax({
+                                type: "GET",
+                                url: '{{movie.id}}?vote={{movie.id}}vote{{user.id}}vote' + $("#star5").val(),
+                                });
+                                window.location.reload();
+                                return false; //<---- move it here
+                          });
+                       });
+                       $(function(){
+                          $("#rate4").click(function(){
+                            $.ajax({
+                                type: "GET",
+                                url: '{{movie.id}}?vote={{movie.id}}vote{{user.id}}vote' + $("#star4").val(),
+                                });
+                                window.location.reload();
+                                return false; //<---- move it here
+                          });
+                       });
+                       $(function(){
+                          $("#rate3").click(function(){
+                            $.ajax({
+                                type: "GET",
+                                url: '{{movie.id}}?vote={{movie.id}}vote{{user.id}}vote' + $("#star3").val(),
+                                });
+                                window.location.reload();
+                                return false; //<---- move it here
+                          });
+                       });
+                       $(function(){
+                          $("#rate2").click(function(){
+                            $.ajax({
+                                type: "GET",
+                                url: '{{movie.id}}?vote={{movie.id}}vote{{user.id}}vote' + $("#star2").val(),
+                                });
+                                window.location.reload();
+                                return false; //<---- move it here
+                          });
+                       });
+                       $(function(){
+                          $("#rate1").click(function(){
+                            $.ajax({
+                                type: "GET",
+                                url: '{{movie.id}}?vote={{movie.id}}vote{{user.id}}vote' + $("#star1").val(),
+                                });
+                                window.location.reload();
+                                return false; //<---- move it here
+                          });
+                       });
+                    </script>
+                    {% for user_vote in movie.votedmovie_set.all|on_user:user.id %}
+                        <div class="my-detail-score">Моя оценка: <span>{{user_vote}}</span></div>
+                        <div class="my-detail-score">({{user_vote.get_score_date}})</div>
+                    {% endfor %}
+                    <!-- Добавить изменение оценки, удаление оценки -->
+                {% endif %}
+            </div>
+            <div id="right">
+                <h1><strong id="movie-title">{{ movie.title }}</strong> <!--({{ movie.get_release_date }})--></h1>
+                <div id="summary">{{ movie.summary }}</div>
+                <div class="parameter">
+                    <div class="parameter-title"><strong>Выход</strong></div>
+                    <div class="parameter-value">{{ movie.release.year }} ({{ movie.get_release_date }})</div>
+                </div>
+                <div class="parameter">
+                    <div class="parameter-title"><strong>Страна</strong></div>
+                    <div class="parameter-value">{{ movie.display_country }}</div>
+                </div>
+                <div class="parameter">
+                    <div class="parameter-title"><strong>Режиссер</strong></div>
+                    <div class="parameter-value">{% for director in movie.director.all %} <a href="{{director.get_absolute_url}}">{{ director }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</div>
+                </div>
+                <div class="parameter">
+                    <div class="parameter-title"><strong>Время</strong></div>
+                    <div class="parameter-value">{{ movie.timing }} мин</div>
+                </div>
+                <div class="parameter">
+                    <div class="parameter-title"><strong>Жанр</strong></div>
+                    <div class="parameter-value">{% for genre in movie.genre.all %} {{ genre }}{% if not forloop.last %}, {% endif %}{% endfor %}</div>
+                </div>
+                <div class="parameter">
+                    <div class="parameter-title"><strong>Актеры</strong></div>
+                    <div class="parameter-value">{% for actor in movie.actor.all %} <a href="{{actor.get_absolute_url}}">{{ actor }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</div>
+                </div>
+                <div class="parameter">
+                    <div class="parameter-title"><strong>Студия</strong></div>
+                    <div class="parameter-value">{% for studio in movie.studio.all %} {{ studio }}{% if not forloop.last %}, {% endif %}{% endfor %}</div>
+                </div>
+                <ul id="facts">
+                    {% for fact in movie.fact.all %}
+                        <li class="fact">{{ fact }}</li>
+                    {% if not forloop.last %}
+                    {% endif %}
+                    {% endfor %}
+                </ul>  
+            </div>
+        </div>
+    </main>
+{% endblock %}

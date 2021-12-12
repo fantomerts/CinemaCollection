@@ -1,0 +1,36 @@
+{% extends "base_generic.html" %}
+{% block nav_actors%}
+    active
+{% endblock %}
+{% block content %}
+    <div id="help-bar">
+      <div class="d1">
+          <form method="GET">
+              <input type="text" placeholder="Имя актера" name="q" value="{{ request.GET.q }}">
+          </form>
+      </div>
+    </div>
+
+    {% if actor_list %}
+    <main id="main-list">
+      {% for actor in actor_list %}
+        <div class="poster">
+          <img src="{{ actor.photo }}">
+          <a href="{{ actor.get_absolute_url }}">
+              <div class="bg">
+                  <div class="title"><h4>{{ actor.name }}</h4></div>
+                  <div class="description">
+                      <div class="score">{{actor.get_birth_date}}</div>
+                      {% if actor.date_of_death != None %}
+                      <div class="score">- {{actor.get_birth_date}}</div>
+                      {% endif %}
+                  </div>
+              </div>
+          </a>
+        </div>
+      {% endfor %}
+    </main>
+    {% else %}
+      <!--<p>В базе нет актеров.</p>-->
+    {% endif %} 
+{% endblock %}
