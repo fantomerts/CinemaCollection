@@ -133,6 +133,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DATE_INPUT_FORMATS = ['%d-%m-%Y']
 
+# EMAIL_HOST='smtp.yandex.ru'
 EMAIL_HOST='smtp.yandex.ru'
 EMAIL_PORT=587
 EMAIL_HOST_USER='d4nilavito@yandex.ru'
